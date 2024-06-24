@@ -1,8 +1,8 @@
-# React + Vite
+Tic Tac Toe with Minimax
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Features
+- React-based UI
+- Minimax Algorithm
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Optimizations
+- decayFactor branch adds decay factor to traditional Minimax Algorithm that applies a time penalty to each recursive call based on the depth of the call stack. The computer is encouraged to select the fastest way to end the game.
