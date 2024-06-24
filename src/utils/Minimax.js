@@ -1,4 +1,4 @@
-
+const DECAY_FACTOR = 0.9
 
 const winner = (board, player, WINNING_COMBINATIONS) => {
     for (const comb of WINNING_COMBINATIONS) {
@@ -10,9 +10,9 @@ const winner = (board, player, WINNING_COMBINATIONS) => {
     return false
 }
 
-const minimax = (board, player, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS) => {
-    if (winner(board, PLAYER_X, WINNING_COMBINATIONS)) return {score: 10}
-    if (winner(board, PLAYER_O, WINNING_COMBINATIONS)) return {score: -10}
+const minimax = (board, player, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS, depth) => {
+    if (winner(board, PLAYER_X, WINNING_COMBINATIONS)) return {score: 10 * Math.pow(DECAY_FACTOR, depth)}
+    if (winner(board, PLAYER_O, WINNING_COMBINATIONS)) return {score: -10 * Math.pow(DECAY_FACTOR, depth)}
     if (board.every(tile => tile !== null)) return {score: 0}
     
     const boardCopy = [...board]
@@ -27,7 +27,7 @@ const minimax = (board, player, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS) => {
     const moves = []
     for (const num of emptyIdx) {
       boardCopy[num] = player
-      const result = minimax(boardCopy, otherPlayer, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS)
+      const result = minimax(boardCopy, otherPlayer, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS, depth + 1)
       result.idx = num
       moves.push(result)
       boardCopy[num] = null
@@ -53,7 +53,7 @@ const minimax = (board, player, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS) => {
       }
     }
     
-    // console.log(player, 'move: index', bestMove.idx, 'score', bestMove.score )
+    console.log(player, 'move: index', bestMove.idx, 'score', bestMove.score )
     return bestMove
 }
 

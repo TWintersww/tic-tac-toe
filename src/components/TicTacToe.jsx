@@ -71,7 +71,7 @@ const TicTacToe = () => {
     }, [playerTurn, gameState])
 
     const computerMove = () => {
-        let bestMove = minimax(tiles, playerTurn, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS);
+        let bestMove = minimax(tiles, playerTurn, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS, 0);
         handleTileClick(bestMove.idx)
     }
 
