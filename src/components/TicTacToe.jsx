@@ -3,10 +3,11 @@ import Board from "./Board"
 import GameOver from "./GameOver"
 import Reset from "./Reset"
 import GameState from "./GameState"
+import {minimax} from "../utils/Minimax"
 
-const PLAYER_X = 'X'
-const PLAYER_O = 'O'
-const WINNING_COMBINATIONS = [
+let PLAYER_X = 'X'
+let PLAYER_O = 'O'
+let WINNING_COMBINATIONS = [
     [0, 1, 2], [3, 4, 5], [6, 7, 8],
     [0, 3, 6], [1, 4, 7], [2, 5, 8], 
     [0, 4, 8], [2, 4, 6]
@@ -18,6 +19,7 @@ const TicTacToe = () => {
     const [playerTurn, setPlayerTurn] = useState(PLAYER_X)
     const [winningTiles, setWinningTiles] = useState(null)
     const [gameState, setGameState] = useState(GameState.inProgress)
+    // const [isComputerMove, setIsComputerMove] = useState(false)
 
     const handleTileClick = (idx) => {
         if (gameState !== GameState.inProgress) return
@@ -36,6 +38,7 @@ const TicTacToe = () => {
         setTiles(Array(9).fill(null))
         setPlayerTurn(PLAYER_X)
         setWinningTiles(null)
+        // setIsComputerMove(false)
     }
     const checkWinner = () => {
         for (const winningComb of WINNING_COMBINATIONS) {
@@ -61,10 +64,20 @@ const TicTacToe = () => {
     useEffect(() => {
         checkWinner()
     }, [tiles])
+    useEffect(() => {
+        if (playerTurn === PLAYER_O && gameState === GameState.inProgress) {
+            computerMove()
+        }
+    }, [playerTurn, gameState])
+
+    const computerMove = () => {
+        let bestMove = minimax(tiles, playerTurn, PLAYER_X, PLAYER_O, WINNING_COMBINATIONS);
+        handleTileClick(bestMove.idx)
+    }
 
     return (
         <>
-            <h1>Tic Tac Toe</h1>
+            <h1>Minimax Tic Tac Toe</h1>
             <Board playerTurn={playerTurn} tiles={tiles} winningTiles={winningTiles} onTileClick={handleTileClick}/>
             <GameOver gameState={gameState}/>
             <Reset gameState={gameState} handleReset={handleReset}/>
